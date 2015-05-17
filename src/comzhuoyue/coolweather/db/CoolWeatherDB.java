@@ -111,14 +111,13 @@ public class CoolWeatherDB {
 	 * 获取所有城市的信息
 	 * @return
 	 */
-	public List<City> loadCity(){
+	public List<City> loadCity(int provinceId ){
 		List<City> cityList = new ArrayList<City>();
-		Cursor cursor = db.query("city", null, null, null, null, null, null);
+		Cursor cursor = db.query("city", null, "province_id=?", new String[]{provinceId+""}, null, null, null);
 		while(cursor.moveToNext()){
 			int id = cursor.getInt(cursor.getColumnIndex("id"));
 			String cityName = cursor.getString(cursor.getColumnIndex("city_name"));
 			String cityCode = cursor.getString(cursor.getColumnIndex("city_code"));
-			int provinceId = cursor.getInt(cursor.getColumnIndex("province_id"));
 			City city = new City(id, cityName, cityCode, provinceId);
 			cityList.add(city);
 		}
@@ -130,14 +129,13 @@ public class CoolWeatherDB {
 	 * @return
 	 */
 	
-	public List<County> loadCounty(){
+	public List<County> loadCounty(int cityId){
 		List<County> countyList = new ArrayList<County>();
-		Cursor cursor = db.query("county", null, null, null, null, null, null);
+		Cursor cursor = db.query("county", null, "city_id=?", new String[]{cityId+""}, null, null, null);
 		while(cursor.moveToNext()){
 			int id = cursor.getInt(cursor.getColumnIndex("id"));
 			String countyName = cursor.getString(cursor.getColumnIndex("county_name"));
 			String countyCode = cursor.getString(cursor.getColumnIndex("county_code"));
-			int cityId = cursor.getInt(cursor.getColumnIndex("city_id"));
 			County county = new County(id, countyName, countyCode, cityId);
 			countyList.add(county);
 		}
