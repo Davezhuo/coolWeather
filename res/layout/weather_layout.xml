@@ -29,11 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-<<<<<<< HEAD
             android:layout_marginRight="15dp"
-=======
-            android:layout_marginRight="10dp"
->>>>>>> 63e37dca693b44eeffe836205cd1666379825c30
             android:layout_marginTop="10dp"
             android:textColor="#fff"
             android:textSize="18sp"
