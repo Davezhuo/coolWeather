@@ -59,6 +59,7 @@ public class Utilty {
 		SharedPreferences preferences =context.getSharedPreferences("weather", Context.MODE_PRIVATE);
 		
 		Editor editor = preferences.edit();
+		editor.putBoolean("citySelected", true);
 		editor.putString("cityName", cityName);
 		editor.putString("cityId", cityId);
 		editor.putString("temp1", temp1);

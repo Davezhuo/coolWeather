@@ -1,10 +1,14 @@
 package comzhuoyue.coolweather.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,7 +17,7 @@ import comzhuoyue.coolweather.util.HttpCallbackListener;
 import comzhuoyue.coolweather.util.HttpUtil;
 import comzhuoyue.coolweather.util.Utilty;
 
-public class WeatherActivity extends Activity {
+public class WeatherActivity extends Activity implements OnClickListener {
 	private LinearLayout weatherInfo;
 	private TextView cityName;
 	private TextView temp1;
@@ -21,7 +25,7 @@ public class WeatherActivity extends Activity {
 	private TextView publicText;
 	private TextView weatherDesp;
 	private TextView currentDate;
-
+	private Button switchCity,refresh;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,7 +39,10 @@ public class WeatherActivity extends Activity {
 
 		weatherDesp = (TextView) findViewById(R.id.weather_desp);
 		currentDate = (TextView) findViewById(R.id.current_date);
-
+		switchCity = (Button) findViewById(R.id.switch_city);
+		refresh = (Button) findViewById(R.id.refresh_weather);
+		switchCity.setOnClickListener(this);
+		refresh.setOnClickListener(this);
 		String countyCode = getIntent().getStringExtra("countyCode");
 		// 先去share文件中查找，如果不存在，则联网查找
 		// 通过县代号查找到该县的天气代号
@@ -139,5 +146,37 @@ public class WeatherActivity extends Activity {
 				+ weatherCode + ".html";
 		queryFromServer(address, "weatherCode");
 	}
+
+	/**
+	 * 按钮被点击的时候调用
+	 */
+		@Override
+		public void onClick(View v) {
+			int id = v.getId();
+			SharedPreferences preferences = getSharedPreferences("weather", MODE_PRIVATE);
+			switch (id) {
+			case R.id.switch_city:
+				Intent intent = new Intent(this,ChooseAreaActivity.class);
+				intent.putExtra("from_weather_activity", true);
+//				Editor editor = preferences.edit();
+//				editor.putBoolean("citySelected", false);
+//				editor.commit();
+				startActivity(intent);
+				finish();
+				break;
+			case R.id.refresh_weather://刷新天气
+				publicText.setText("同步中...");
+				
+				//重新从服务器上查找天气信息
+				String weatherCode = preferences.getString("cityId", "");
+				//根据城市code找到县的code
+				if(!TextUtils.isEmpty(weatherCode)){
+					queryWeatherInfo(weatherCode);
+				}
+				break;
+			default:
+				break;
+			}
+		}
 
 }
