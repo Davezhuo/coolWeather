@@ -3,7 +3,6 @@ package comzhuoyue.coolweather.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import comzhuoyue.coolweather.R;
+import comzhuoyue.coolweather.service.AutoUpdateService;
 import comzhuoyue.coolweather.util.HttpCallbackListener;
 import comzhuoyue.coolweather.util.HttpUtil;
 import comzhuoyue.coolweather.util.Utilty;
@@ -56,7 +56,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 			// 直接去shared文件中取
 			showWeather();
 		}
-
+		
 	}
 
 	/**
@@ -72,6 +72,9 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		currentDate.setText(sdf.getString("current_date", ""));
 		cityName.setVisibility(View.VISIBLE);
 		weatherInfo.setVisibility(View.VISIBLE);
+		
+		Intent intent = new Intent(this,AutoUpdateService.class);
+		startService(intent);
 	}
 
 	/**
