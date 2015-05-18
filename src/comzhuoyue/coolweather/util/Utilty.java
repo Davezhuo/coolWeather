@@ -24,6 +24,7 @@ public class Utilty {
 		//获取天气信息
 		try {
 			JSONObject jsonObject = new JSONObject(response);
+<<<<<<< HEAD
 			JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
 			String cityName = weatherInfo.getString("city");
 			String cityId = weatherInfo.getString("cityid");
@@ -31,6 +32,14 @@ public class Utilty {
 			String temp2 = weatherInfo.getString("temp2");
 			String weatherDesp = weatherInfo.getString("weather");
 			String publicTime = weatherInfo.getString("ptime");
+=======
+			String cityName = jsonObject.getString("city");
+			String cityId = jsonObject.getString("cityid");
+			String temp1 = jsonObject.getString("temp1");
+			String temp2 = jsonObject.getString("temp2");
+			String weatherDesp = jsonObject.getString("weather");
+			String publicTime = jsonObject.getString("ptime");
+>>>>>>> 63e37dca693b44eeffe836205cd1666379825c30
 			saveWeatherInfo(context,cityName,cityId,temp1,temp2,weatherDesp,publicTime);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,11 +64,17 @@ public class Utilty {
 	private static void saveWeatherInfo(Context context,String cityName, String cityId,
 			String temp1, String temp2, String weatherDesp, String publicTime) {
 		
+<<<<<<< HEAD
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日",Locale.CHINA);
 		SharedPreferences preferences =context.getSharedPreferences("weather", Context.MODE_PRIVATE);
 		
 		Editor editor = preferences.edit();
 		editor.putBoolean("citySelected", true);
+=======
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MMy月dd日",Locale.CHINA);
+		SharedPreferences preferences =context.getSharedPreferences("weather", Context.MODE_APPEND);
+		Editor editor = preferences.edit();
+>>>>>>> 63e37dca693b44eeffe836205cd1666379825c30
 		editor.putString("cityName", cityName);
 		editor.putString("cityId", cityId);
 		editor.putString("temp1", temp1);
