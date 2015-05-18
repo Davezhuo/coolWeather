@@ -1,5 +1,14 @@
 package comzhuoyue.coolweather.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
 import comzhuoyue.coolweather.db.CoolWeatherDB;
@@ -8,6 +17,62 @@ import comzhuoyue.coolweather.model.County;
 import comzhuoyue.coolweather.model.Province;
 
 public class Utilty {
+	/**
+	 * 解析返回的天气json字符串
+	 */
+	public static void HandlerWeatherData(Context context ,String response){
+		//获取天气信息
+		try {
+			JSONObject jsonObject = new JSONObject(response);
+			JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
+			String cityName = weatherInfo.getString("city");
+			String cityId = weatherInfo.getString("cityid");
+			String temp1 = weatherInfo.getString("temp1");
+			String temp2 = weatherInfo.getString("temp2");
+			String weatherDesp = weatherInfo.getString("weather");
+			String publicTime = weatherInfo.getString("ptime");
+			saveWeatherInfo(context,cityName,cityId,temp1,temp2,weatherDesp,publicTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	
+	
+	/**
+	 * 将天气信息保存到sharedPreferences文件中
+	 * @param context
+	 * @param cityName
+	 * @param cityId
+	 * @param temp1
+	 * @param temp2
+	 * @param weatherDesp
+	 * @param publicTime
+	 */
+	private static void saveWeatherInfo(Context context,String cityName, String cityId,
+			String temp1, String temp2, String weatherDesp, String publicTime) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日",Locale.CHINA);
+		SharedPreferences preferences =context.getSharedPreferences("weather", Context.MODE_PRIVATE);
+		
+		Editor editor = preferences.edit();
+		editor.putBoolean("citySelected", true);
+		editor.putString("cityName", cityName);
+		editor.putString("cityId", cityId);
+		editor.putString("temp1", temp1);
+		editor.putString("temp2", temp2);
+		editor.putString("weatherDesp", weatherDesp);
+		editor.putString("publicTime", publicTime);
+		editor.putString("current_date",sdf.format(new Date()));
+		editor.commit();
+	}
+
+
+
+
 	/**
 	 * 解析获取到的省份数据
 	 * @param coolWeatherDB

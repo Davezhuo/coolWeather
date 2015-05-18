@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -69,6 +70,11 @@ public class ChooseAreaActivity extends Activity {
 				}else if(LEVEL_CITY==currentLevel){//市级列表被选中，查找县级列表
 					selectedCity = citiesList.get(position);
 					queryCounties();
+				}else if(LEVEL_COUNTY==currentLevel){
+					County county = countyList.get(position);
+					Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+					intent.putExtra("countyCode", county.getCountyCode());
+					startActivity(intent);
 				}
 				
 			}
