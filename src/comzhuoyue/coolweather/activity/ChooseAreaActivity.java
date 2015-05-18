@@ -43,7 +43,6 @@ public class ChooseAreaActivity extends Activity  {
 	private List<County> countyList;// 省列表
 	private Province selectedProvince;// 选中的省
 	private City selectedCity;// 选中的市
-	private County selectedCounty;// 选中的县
 	private List<City> citiesList;
 	
 	//判断是否从WeatherActivity中跳转
